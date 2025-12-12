@@ -86,9 +86,9 @@ Struktur folder standar Vite + React:
 └── README.md           # Dokumentasi
 
   ```
-## Build your app
+## Build app mu via v0:
 
-Continue building your app on:
+Lanjutkan membangun/build aplikasi mu di v0:
 
 **[https://v0.app/chat/projects/J9y1PaAyD02](https://v0.app/chat/projects/J9y1PaAyD02)**
 
