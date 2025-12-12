@@ -15,6 +15,8 @@ export default async function DashboardPage() {
   // Redirect based on role
   if (profile?.role === "admin") {
     redirect("/admin")
+  } else if (profile?.role === "guest") {
+    redirect("/guest")
   } else {
     redirect("/student")
   }

@@ -11,13 +11,14 @@ import { Badge } from "@/components/ui/badge"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
-import { Vote, ArrowLeft } from "lucide-react"
+import { Vote, ArrowLeft, User, UserCheck } from "lucide-react"
 
 export default function LoginPage() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [isGuestLoading, setIsGuestLoading] = useState(false)
   const router = useRouter()
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -27,27 +28,33 @@ export default function LoginPage() {
     setError(null)
 
     try {
-      console.log("[v0] Attempting login with email:", email)
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
-        options: {
-          emailRedirectTo: process.env.NEXT_PUBLIC_DEV_SUPABASE_REDIRECT_URL || `${window.location.origin}/dashboard`,
-        },
       })
-
-      console.log("[v0] Login response:", { data, error })
 
       if (error) throw error
 
-      console.log("[v0] Login successful, redirecting to dashboard")
       router.push("/dashboard")
     } catch (error: unknown) {
-      console.log("[v0] Login error:", error)
       setError(error instanceof Error ? error.message : "An error occurred")
     } finally {
       setIsLoading(false)
     }
+  }
+
+  const handleGuestLogin = () => {
+    setIsGuestLoading(true)
+    // Store guest session in localStorage
+    localStorage.setItem(
+      "guestSession",
+      JSON.stringify({
+        isGuest: true,
+        createdAt: new Date().toISOString(),
+      }),
+    )
+    // Redirect directly to guest dashboard
+    router.push("/guest")
   }
 
   return (
@@ -106,9 +113,34 @@ export default function LoginPage() {
                 </div>
               )}
               <Button type="submit" className="w-full bg-primary hover:bg-primary/90" disabled={isLoading}>
+                <UserCheck className="w-4 h-4 mr-2" />
                 {isLoading ? "Signing in..." : "Sign In"}
               </Button>
             </form>
+
+            <div className="relative my-6">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t border-primary/20" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-card px-2 text-muted-foreground">Or continue as</span>
+              </div>
+            </div>
+
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full border-primary/30 hover:bg-primary/10 hover:border-primary/50 bg-transparent"
+              onClick={handleGuestLogin}
+              disabled={isGuestLoading}
+            >
+              <User className="w-4 h-4 mr-2" />
+              {isGuestLoading ? "Redirecting..." : "Continue as Guest"}
+            </Button>
+
+            <p className="text-xs text-center text-muted-foreground mt-3">
+              Guest access allows you to view elections and candidates without voting privileges
+            </p>
 
             <div className="mt-6 text-center">
               <p className="text-sm text-muted-foreground">
@@ -121,13 +153,15 @@ export default function LoginPage() {
           </CardContent>
         </Card>
 
-        {/* Role Info */}
-        <div className="mt-6 flex gap-2 justify-center">
+        <div className="mt-6 flex gap-2 justify-center flex-wrap">
           <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20">
             Student Access
           </Badge>
           <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20">
             Admin Access
+          </Badge>
+          <Badge variant="secondary" className="bg-muted text-muted-foreground border-muted-foreground/20">
+            Guest Access
           </Badge>
         </div>
       </div>
