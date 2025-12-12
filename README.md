@@ -1,11 +1,13 @@
 # 🗳️ Sistem Pemilihan Kahima (E-Voting)
 
-![Status](https://img.shields.io/badge/Status-Active-brightgreen?style=for-the-badge)
-![Language](https://img.shields.io/badge/Language-PHP-blue?style=for-the-badge&logo=php&logoColor=white)
-![Deployment](https://img.shields.io/badge/Deploy-Vercel-black?style=for-the-badge&logo=vercel&logoColor=white)
-![License](https://img.shields.io/badge/License-MIT-orange?style=for-the-badge)
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-B73BFE?style=for-the-badge&logo=vite&logoColor=FFD62E)
+![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
 
-**Sistem Pemilihan Kahima** adalah aplikasi *Electronic Voting* berbasis web yang dirancang untuk memodernisasi proses pemilihan Ketua Himpunan Mahasiswa. Aplikasi ini menggantikan metode konvensional (kertas) menjadi sistem digital yang **transparan, real-time, dan akurat**, serta menjamin prinsip **LUBER JURDIL** (Langsung, Umum, Bebas, Rahasia, Jujur, dan Adil).
+**Sistem Pemilihan Kahima** adalah aplikasi *Single Page Application* (SPA) berbasis web yang modern dan responsif. Aplikasi ini dibangun untuk mendigitalkan proses pemilihan Ketua Himpunan Mahasiswa agar berjalan secara **transparan, real-time, dan aman**.
+
+Menggunakan teknologi modern **React TypeScript** dengan build tool **Vite**, aplikasi ini menawarkan performa yang sangat cepat dan pengalaman pengguna yang mulus.
 
 ---
 
@@ -15,7 +17,7 @@
 - [Fitur Utama (MVP)](#-fitur-utama-mvp)
 - [Teknologi yang Digunakan](#-teknologi-yang-digunakan)
 - [Struktur Project](#-struktur-project)
-- [Skema Database](#-skema-database)
+- [Model Data / Skema](#-skema-database)
 - [Cara Setup Local](#-cara-setup-local)
 - [Cara Deploy ke Vercel](#-cara-deploy-ke-vercel)
 - [Cara Kontribusi](#-cara-kontribusi)
@@ -24,57 +26,64 @@
 
 ## 📖 Overview Project
 
-Proyek ini dibangun untuk mengatasi kendala dalam pemilihan manual seperti:
-1.  **Inefisiensi:** Penghitungan suara manual yang memakan waktu lama.
-2.  **Human Error:** Risiko kesalahan rekapitulasi data.
-3.  **Kecurangan:** Potensi pemilih ganda atau surat suara tidak sah.
-
-Sistem ini memastikan setiap mahasiswa hanya memiliki **satu hak suara** yang divalidasi melalui sistem login, dan hasil suara dapat dipantau secara langsung oleh publik setelah pemilihan ditutup.
+Proyek ini bertujuan untuk mengatasi inefisiensi dalam pemilihan manual. Dengan beralih ke sistem digital, Himpunan Mahasiswa dapat:
+1.  **Mencegah Kecurangan:** Validasi satu suara per satu NIM.
+2.  **Hasil Real-time:** Menghilangkan waktu tunggu rekapitulasi manual.
+3.  **Aksesibilitas:** Mahasiswa dapat memilih dari mana saja (selama terhubung ke jaringan kampus/internet).
 
 ---
 
 ## ✨ Fitur Utama (MVP)
 
-Aplikasi ini mencakup fitur *Minimum Viable Product* (MVP) sebagai berikut:
+Aplikasi ini mencakup fitur *Minimum Viable Product* (MVP):
 
-### 👤 Panel Pemilih (User)
-* **Secure Login:** Validasi akses menggunakan NIM dan Token/Password unik.
-* **Kandidat Info:** Menampilkan profil, visi, dan misi setiap paslon.
-* **One-Click Vote:** Antarmuka pemilihan yang mudah dan intuitif.
-* **Vote Lock:** Akun otomatis terkunci setelah memberikan suara (mencegah *double vote*).
+### 👤 User (Mahasiswa)
+* **Auth System:** Login menggunakan kredensial (NIM/Token).
+* **Candidate Showcase:** Melihat profil, visi, dan misi kandidat secara interaktif.
+* **Voting Mechanism:** Memberikan suara dengan UX yang intuitif.
+* **Status Tracking:** Feedback visual setelah berhasil melakukan voting.
 
-### 🛡️ Panel Admin
-* **Dashboard Real-time:** Grafik perolehan suara (*Live Count*) yang update otomatis.
-* **Manajemen Kandidat:** Tambah, Edit, dan Hapus data paslon (termasuk upload foto).
-* **Manajemen DPT:** Import data Daftar Pemilih Tetap.
-* **Kontrol Sesi:** Fitur untuk membuka atau menutup periode voting.
-* **Rekapitulasi:** Export hasil pemilihan.
+### 🛡️ Admin Dashboard
+* **Real-time Chart:** Visualisasi hasil suara langsung (Live Count).
+* **CRUD Kandidat:** Manajemen data paslon (Nama, Visi, Misi, Foto).
+* **Data Pemilih:** Manajemen status pemilih (DPT).
+* **Session Control:** Pengaturan buka/tutup sesi pemilihan.
 
 ---
 
 ## 🛠 Teknologi yang Digunakan
 
-*(Sesuaikan daftar ini dengan stack asli proyek Anda)*
-
--   **Frontend:** HTML5, CSS3, JavaScript (Chart.js untuk grafik).
--   **Backend:** PHP (Native/Laravel).
--   **Database:** MySQL / MariaDB.
--   **Tools:** Visual Studio Code, Git, XAMPP/Laragon.
+-   **Core:** [React](https://reactjs.org/) (v18+)
+-   **Language:** [TypeScript](https://www.typescriptlang.org/) (Strict typing)
+-   **Build Tool:** [Vite](https://vitejs.dev/) (Super fast build time)
+-   **Routing:** React Router DOM
+-   **Styling:** CSS Modules / Tailwind CSS *(Sesuaikan dengan project)*
+-   **HTTP Client:** Axios / Fetch API
+-   **State Management:** React Hooks (useState, useEffect, useContext)
 
 ---
 
 ## 📂 Struktur Project
 
+Struktur folder standar Vite + React:
+
 ```text
 /
-├── public/             # Aset publik (CSS, JS, Images)
-├── src/                # Source code utama
-│   ├── config/         # Konfigurasi koneksi database
-│   ├── controllers/    # Logika backend (Auth, VoteController)
-│   └── views/          # Tampilan antarmuka (UI)
-├── database/           # File dump SQL (.sql)
-├── index.php           # Entry point aplikasi
-└── README.md           # Dokumentasi proyek
+├── public/             # Aset statis (Favicon, robots.txt)
+├── src/
+│   ├── assets/         # Gambar, Fonts, Global CSS
+│   ├── components/     # Reusable UI Components (Button, Card, Navbar)
+│   ├── pages/          # Halaman Utama (Login, Dashboard, VotePage)
+│   ├── hooks/          # Custom React Hooks
+│   ├── types/          # Definisi Interface TypeScript
+│   ├── utils/          # Fungsi bantuan (Format tanggal, Validasi)
+│   ├── App.tsx         # Root Component & Routing
+│   └── main.tsx        # Entry point React
+├── .env                # Environment Variables
+├── package.json        # Dependencies
+├── tsconfig.json       # Konfigurasi TypeScript
+├── vite.config.ts      # Konfigurasi Vite
+└── README.md           # Dokumentasi
 
   ```
 ## Build your app
@@ -90,6 +99,13 @@ Sistem ini menggunakan relasi database sebagai berikut:
 - candidates: Menyimpan data paslon (Nama, Visi, Misi, Foto, Jumlah_Suara).
 - votes: Menyimpan rekam jejak suara masuk (User_ID, Candidate_ID, Timestamp).
 - settings: Pengaturan sesi pemilihan (Waktu Buka/Tutup).
+
+## Contributing
+<a href="https://github.com/ezraldasalsa/Sistem-Pemilihan-Kahima/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=ezraldasalsa/Sistem-Pemilihan-Kahima" />
+</a>
+
+Lihat [CONTRIBUTING](CONTRIBUTING.md) untuk lebih detailnya.
 
 ## 🤝 Cara Kontribusi
 
